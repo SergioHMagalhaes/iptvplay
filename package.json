@@ -19,6 +19,7 @@
     "@lucide/angular": "^1.16.0",
     "@tailwindcss/postcss": "^4.3.0",
     "daisyui": "^5.5.19",
+    "dexie": "^4.4.2",
     "postcss": "^8.5.14",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.3.0"
@@ -51,6 +52,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-prettier": "^5.5.5",
+    "fake-indexeddb": "^6.2.5",
     "husky": "^9.1.7",
     "jsdom": "^27.1.0",
     "lint-staged": "^17.0.4",

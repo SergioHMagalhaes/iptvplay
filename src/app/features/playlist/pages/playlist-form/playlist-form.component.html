@@ -1,0 +1,236 @@
+<div class="flex min-h-screen flex-col p-4 max-w-lg mx-auto">
+  <div class="flex items-center justify-end mb-2">
+    <button
+      data-testid="exit-button"
+      class="btn btn-ghost btn-sm btn-circle"
+      aria-label="Fechar formulário"
+      (click)="exit()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <h1 class="text-2xl font-bold mb-6 text-center">
+    {{ isEditMode() ? "Editar lista" : "Adicionar lista" }}
+  </h1>
+
+  @if (isLoading()) {
+    <div class="flex flex-1 items-center justify-center">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  }
+
+  @if (!isLoading()) {
+    <form [formGroup]="playlistForm" (ngSubmit)="save()" class="flex flex-1 flex-col gap-5 m-4 sm:mx-0">
+      <div class="form-control w-full">
+        <label class="label" for="field-source-type">
+          <span class="label-text text-base-content">Tipo da fonte</span>
+        </label>
+        <select
+          id="field-source-type"
+          data-testid="field-source-type"
+          class="select select-lg border-none bg-base-200 w-full"
+          formControlName="sourceType"
+          aria-label="Tipo da fonte"
+          (change)="onSourceTypeChange()"
+        >
+          <option value="xtream">Credenciais Xtream</option>
+          <option value="m3u_url">M3U/Xtream URL</option>
+        </select>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label" for="field-name">
+          <span class="label-text text-base-content flex items-center gap-2">
+            <svg lucideTableOfContents [size]="16"></svg>
+            Nome da lista de reprodução
+          </span>
+        </label>
+        <input
+          id="field-name"
+          data-testid="field-name"
+          type="text"
+          class="input p-5 input-lg border-none bg-base-200 w-full"
+          formControlName="name"
+          placeholder="Adicione um nome para a lista..."
+          aria-describedby="name-error"
+        />
+        @if (playlistForm.controls.name.touched && playlistForm.controls.name.hasError("required")) {
+          <div class="label">
+            <span id="name-error" class="label-text-alt text-error">Nome é obrigatório</span>
+          </div>
+        }
+        @if (playlistForm.controls.name.touched && playlistForm.controls.name.hasError("duplicateName")) {
+          <div class="label" data-testid="error-name-duplicate">
+            <span class="label-text-alt text-error">Já existe uma lista com este nome</span>
+          </div>
+        }
+      </div>
+
+      @if (playlistForm.controls.sourceType.value === "xtream") {
+        <div class="form-control w-full">
+          <label class="label" for="field-domain">
+            <span class="label-text text-base-content flex items-center gap-2">
+              <svg lucideGlobe [size]="16"></svg>
+              Domínio
+            </span>
+          </label>
+          <input
+            id="field-domain"
+            data-testid="field-domain"
+            type="text"
+            class="input p-5 input-lg border-none bg-base-200 w-full"
+            formControlName="domain"
+            placeholder="Adicione o domínio..."
+            aria-describedby="domain-error"
+          />
+          @if (playlistForm.controls.domain.touched && playlistForm.controls.domain.hasError("required")) {
+            <div class="label">
+              <span id="domain-error" class="label-text-alt text-error">Domínio é obrigatório</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label" for="field-username">
+            <span class="label-text text-base-content flex items-center gap-2">
+              <svg lucideUser [size]="16"></svg>
+              Usuário
+            </span>
+          </label>
+          <input
+            id="field-username"
+            data-testid="field-username"
+            type="text"
+            class="input input-lg border-none bg-base-200 w-full p-5"
+            formControlName="username"
+            placeholder="Adicione o usuário..."
+            aria-describedby="username-error"
+          />
+          @if (playlistForm.controls.username.touched && playlistForm.controls.username.hasError("required")) {
+            <div class="label">
+              <span id="username-error" class="label-text-alt text-error">Usuário é obrigatório</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control w-full">
+          <label class="label" for="field-password">
+            <span class="label-text text-base-content flex items-center gap-2">
+              <svg lucideLock [size]="16"></svg>
+              Senha
+            </span>
+          </label>
+          <input
+            id="field-password"
+            data-testid="field-password"
+            type="text"
+            class="input input-lg border-none bg-base-200 w-full p-5"
+            formControlName="password"
+            placeholder="Adicione a senha..."
+            aria-describedby="password-error"
+          />
+          @if (playlistForm.controls.password.touched && playlistForm.controls.password.hasError("required")) {
+            <div class="label">
+              <span id="password-error" class="label-text-alt text-error">Senha é obrigatória</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (playlistForm.controls.sourceType.value === "m3u_url") {
+        <div class="form-control w-full">
+          <label class="label" for="field-url">
+            <span class="label-text text-base-content flex items-center gap-2">
+              <svg lucideGlobe [size]="16"></svg>
+              URL
+            </span>
+          </label>
+          <input
+            id="field-url"
+            data-testid="field-url"
+            type="text"
+            class="input input-lg border-none bg-base-200 w-full p-5"
+            formControlName="url"
+            placeholder="Adicione a URL..."
+            aria-describedby="url-error"
+          />
+          @if (playlistForm.controls.url.touched && playlistForm.controls.url.hasError("required")) {
+            <div class="label">
+              <span id="url-error" class="label-text-alt text-error">URL é obrigatória</span>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="form-control w-full">
+        <label class="label" for="field-epg-url">
+          <span class="label-text text-base-content flex items-center gap-2">
+            <svg lucideMonitor [size]="16"></svg>
+            URL do EPG (opcional)
+          </span>
+        </label>
+        <input
+          id="field-epg-url"
+          data-testid="field-epg-url"
+          type="text"
+          class="input input-lg border-none bg-base-200 w-full p-5"
+          formControlName="epgUrl"
+          placeholder="Adicione a URL do EPG..."
+        />
+      </div>
+
+      @if (playlistForm.controls.sourceType.value === "m3u_url") {
+        <div class="form-control w-full">
+          <div class="label">
+            <span class="label-text text-base-content flex items-center gap-2">
+              <svg lucideTriangleAlert [size]="16"></svg>
+              Forçar M3U (opcional)
+            </span>
+          </div>
+          <label class="block label cursor-pointer flex justify-between rounded-lg bg-base-200 px-4 py-3">
+            <span class="label-text">Forçar M3U</span>
+            <input
+              data-testid="field-force-m3u"
+              type="checkbox"
+              class="toggle toggle-primary"
+              formControlName="forceM3u"
+            />
+          </label>
+
+          <p class="mt-2 text-xs text-base-content/50">
+            Se ativado, o formato M3U será utilizado em todos os casos. Caso contrário, a lista de produção será
+            convertida para o formato Xtream, por ser mais rápido e leve.
+          </p>
+        </div>
+      }
+
+      <div class="mt-4 pb-4 block sm:flex justify-center gap-8">
+        <button
+          data-testid="submit-button"
+          type="submit"
+          class="btn btn-xl btn-primary w-full sm:w-auto"
+          [disabled]="playlistForm.invalid"
+        >
+          @if (isEditMode()) {
+            <svg lucidePlus></svg>
+            Salvar
+          } @else {
+            Adicionar
+          }
+        </button>
+        <button
+          data-testid="cancel-button"
+          type="button"
+          class="btn btn-neutral btn-xl w-full sm:w-auto mt-5 sm:mt-0"
+          (click)="cancel()"
+        >
+          <svg lucideX></svg>
+          Cancelar
+        </button>
+      </div>
+    </form>
+  }
+</div>

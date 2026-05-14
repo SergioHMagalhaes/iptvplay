@@ -1,0 +1,175 @@
+<!-- Loading -->
+@if (isLoading()) {
+  <div class="flex justify-center items-center min-h-[60vh]">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+}
+
+<!-- Erro -->
+@if (errorMessage(); as error) {
+  <div class="alert alert-error mx-4 mt-4" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>{{ error }}</span>
+  </div>
+}
+
+<!-- Conteúdo principal -->
+@if (!isLoading()) {
+  <div class="flex min-h-screen flex-col p-4 max-w-lg mx-auto">
+    <!-- Header Mobile: ícones + e X no topo -->
+    <div class="flex items-center justify-between mb-2">
+      <button
+        class="btn btn-ghost btn-sm btn-circle text-primary"
+        aria-label="Adicionar nova lista"
+        (click)="navigateToAdd()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+      </button>
+      <button class="btn btn-ghost btn-sm btn-circle" aria-label="Sair" (click)="exit()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Título -->
+    <h1 class="text-2xl font-bold mb-6 text-center">Lista de reprodução</h1>
+
+    <!-- Empty state -->
+    @if (playlists().length === 0 && !errorMessage()) {
+      <div data-testid="empty-state" class="flex flex-1 flex-col items-center justify-center text-center px-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-20 w-20 text-base-content/30 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        <h2 class="text-lg font-semibold mb-2 text-base-content/70">Nenhuma lista cadastrada</h2>
+        <p class="text-sm text-base-content/50 mb-6">Adicione sua primeira lista de reprodução para começar.</p>
+        <button data-testid="empty-state-add-button" class="btn btn-primary" (click)="navigateToAdd()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Adicionar lista
+        </button>
+      </div>
+    }
+
+    <!-- Lista de cards -->
+    @if (playlists().length > 0) {
+      <div class="flex flex-1 flex-col gap-3">
+        @for (playlist of playlists(); track playlist.id) {
+          <div
+            data-testid="playlist-card"
+            class="card cursor-pointer border border-base-content/10 bg-base-200 shadow-sm transition-colors hover:bg-base-300"
+            tabindex="0"
+            role="button"
+            (click)="onCardClick(playlist)"
+            (keyup.enter)="onCardClick(playlist)"
+          >
+            <div class="card-body p-4">
+              <div class="flex items-center justify-between">
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-base font-semibold truncate">
+                    {{ playlist.name }}
+                  </h3>
+                  @if (playlist.expiresAt) {
+                    <p
+                      data-testid="playlist-expiry"
+                      class="mt-0.5 text-xs"
+                      [class]="getExpiryText(playlist.expiresAt) === 'Expirado' ? 'text-error' : 'text-success'"
+                    >
+                      {{ getExpiryText(playlist.expiresAt) }}
+                    </p>
+                  }
+                </div>
+                <!-- Menu de contexto -->
+                <div class="relative">
+                  <button
+                    data-testid="context-menu-button"
+                    class="btn btn-ghost btn-xs btn-circle"
+                    aria-label="Abrir menu de opções"
+                    (click)="toggleMenu(playlist.id!, $event)"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="6" r="1.5" />
+                      <circle cx="12" cy="12" r="1.5" />
+                      <circle cx="12" cy="18" r="1.5" />
+                    </svg>
+                  </button>
+                  @if (openMenuId() === playlist.id) {
+                    <ul class="menu absolute right-0 top-8 z-10 w-36 rounded-box bg-base-100 p-1 shadow-lg">
+                      <li>
+                        <a
+                          data-testid="menu-edit"
+                          tabindex="0"
+                          role="menuitem"
+                          (click)="navigateToEdit(playlist.id!); $event.stopPropagation()"
+                          (keyup.enter)="navigateToEdit(playlist.id!); $event.stopPropagation()"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                          Editar
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          data-testid="menu-delete"
+                          class="text-error"
+                          tabindex="0"
+                          role="menuitem"
+                          (click)="confirmDelete(playlist.id!); $event.stopPropagation()"
+                          (keyup.enter)="confirmDelete(playlist.id!); $event.stopPropagation()"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                          Excluir
+                        </a>
+                      </li>
+                    </ul>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
