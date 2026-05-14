@@ -2,35 +2,15 @@ import { Component, inject, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-  LucideTableOfContents,
-  LucideGlobe,
-  LucideUser,
-  LucideLock,
-  LucideMonitor,
-  LucideTriangleAlert,
-  LucideX,
-  LucidePlus,
-} from "@lucide/angular";
 
 import { PlaylistService } from "../../../../core/services/playlist.service";
 import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { LUCIDE_ICONS } from "../../../../shared/icons/lucide-icons";
 
 @Component({
   selector: "app-playlist-form",
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    LucideTableOfContents,
-    LucideGlobe,
-    LucideUser,
-    LucideLock,
-    LucideMonitor,
-    LucideTriangleAlert,
-    LucideX,
-    LucidePlus,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, LUCIDE_ICONS],
   templateUrl: "./playlist-form.component.html",
   styleUrl: "./playlist-form.component.scss",
 })

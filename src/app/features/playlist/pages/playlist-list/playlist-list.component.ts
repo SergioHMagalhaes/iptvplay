@@ -3,11 +3,12 @@ import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
 import { PlaylistService } from "../../../../core/services/playlist.service";
 import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { LUCIDE_ICONS } from "../../../../shared/icons/lucide-icons";
 
 @Component({
   selector: "app-playlist-list",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LUCIDE_ICONS],
   templateUrl: "./playlist-list.component.html",
   styleUrl: "./playlist-list.component.scss",
 })
