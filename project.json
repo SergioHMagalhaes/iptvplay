@@ -21,7 +21,7 @@
             "input": "public"
           }
         ],
-        "styles": ["./src/styles.scss"]
+        "styles": ["./src/styles/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -68,7 +68,9 @@
     },
     "test": {
       "executor": "@angular/build:unit-test",
-      "options": {}
+      "options": {
+        "setupFiles": ["./src/test-setup.ts"]
+      }
     },
     "serve-static": {
       "continuous": true,

@@ -1,0 +1,52 @@
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "iptv";
+  default: true;
+  prefersdark: true;
+  color-scheme: "dark";
+
+  /* ── Fundos ── */
+  --color-base-100: #00060f;
+  --color-base-200: #07162d;
+  --color-base-300: #0d1f3f;
+  --color-base-content: #ffffff;
+
+  /* ── Primária — botão Salvar / Adicionar ── */
+  --color-primary: #0099ff;
+  --color-primary-content: #101419;
+
+  /* ── Secundária — botão Cancelar / Sair ── */
+  --color-secondary: #6d7073;
+  --color-secondary-content: #ffffff;
+
+  /* ── Neutro — nav mobile / menu lateral ── */
+  --color-neutral: #2d3640;
+  --color-neutral-content: #e1e5e9;
+
+  /* ── Sucesso — expiração da lista ── */
+  --color-success: #39cd6e;
+  --color-success-content: #121611;
+
+  /* ── Utilitários ── */
+  --color-accent: #0099ff;
+  --color-accent-content: #101419;
+  --color-info: #0099ff;
+  --color-info-content: #101419;
+  --color-warning: #f0b83e;
+  --color-warning-content: #824e24;
+  --color-error: #ff5c62;
+  --color-error-content: #fff9f9;
+
+  /* ── Forma — botões pill, campos arredondados ── */
+  --radius-selector: 2rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+
+  /* ── Misc ── */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
