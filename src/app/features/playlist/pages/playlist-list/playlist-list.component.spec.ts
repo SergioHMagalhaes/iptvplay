@@ -4,6 +4,8 @@ import { vi } from "vitest";
 import { PlaylistListComponent } from "./playlist-list.component";
 import { PlaylistService } from "../../../../core/services/playlist.service";
 import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
+import { PlaylistSyncService } from "../../../../core/services/playlist-sync.service";
 
 /**
  * Testes unitários para PlaylistListComponent
@@ -37,6 +39,11 @@ describe("PlaylistListComponent", () => {
     updatePlaylist: ReturnType<typeof vi.fn>;
     deletePlaylist: ReturnType<typeof vi.fn>;
   };
+  let mockSelectedPlaylistService: {
+    getSelectedPlaylistId: ReturnType<typeof vi.fn>;
+    selectPlaylist: ReturnType<typeof vi.fn>;
+  };
+  let mockPlaylistSyncService: { syncPlaylist: ReturnType<typeof vi.fn> };
   let router: Router;
 
   beforeEach(async () => {
@@ -47,11 +54,20 @@ describe("PlaylistListComponent", () => {
       updatePlaylist: vi.fn().mockResolvedValue(undefined),
       deletePlaylist: vi.fn().mockResolvedValue(undefined),
     };
+    mockSelectedPlaylistService = {
+      getSelectedPlaylistId: vi.fn().mockResolvedValue(null),
+      selectPlaylist: vi.fn().mockResolvedValue(undefined),
+    };
+    mockPlaylistSyncService = {
+      syncPlaylist: vi.fn().mockResolvedValue(undefined),
+    };
 
     await TestBed.configureTestingModule({
       imports: [PlaylistListComponent],
       providers: [
         { provide: PlaylistService, useValue: mockPlaylistService },
+        { provide: SelectedPlaylistService, useValue: mockSelectedPlaylistService },
+        { provide: PlaylistSyncService, useValue: mockPlaylistSyncService },
         provideRouter([
           {
             path: "playlists",
@@ -119,6 +135,55 @@ describe("PlaylistListComponent", () => {
       // Assert
       expect(expiryEl).toBeTruthy();
       expect(expiryEl.textContent).toBeTruthy();
+    });
+  });
+
+  describe("Seleção da playlist ativa", () => {
+    it("restaura a playlist selecionada ao inicializar", async () => {
+      mockPlaylistService.getAllPlaylists.mockResolvedValue([createMockPlaylist({ id: 1 })]);
+      mockSelectedPlaylistService.getSelectedPlaylistId.mockResolvedValue(1);
+
+      component.ngOnInit();
+      await fixture.whenStable();
+
+      expect(component.selectedPlaylistId()).toBe(1);
+    });
+
+    it("permite selecionar a playlist que será usada pelo player e sincroniza o conteúdo", async () => {
+      const playlist = createMockPlaylist({ id: 1 });
+
+      await component.selectForPlayer(playlist);
+
+      expect(mockSelectedPlaylistService.selectPlaylist).toHaveBeenCalledWith(1);
+      expect(mockPlaylistSyncService.syncPlaylist).toHaveBeenCalledWith(playlist);
+      expect(component.selectedPlaylistId()).toBe(1);
+    });
+
+    it("exibe estado de sincronização durante a seleção", async () => {
+      const playlist = createMockPlaylist({ id: 1 });
+      let resolveSync!: () => void;
+      mockPlaylistSyncService.syncPlaylist.mockReturnValue(
+        new Promise<void>((resolve) => {
+          resolveSync = resolve;
+        }),
+      );
+
+      const promise = component.selectForPlayer(playlist);
+
+      expect(component.syncingPlaylistId()).toBe(1);
+
+      resolveSync();
+      await promise;
+      expect(component.syncingPlaylistId()).toBeNull();
+    });
+
+    it("expõe erro de sincronização quando a atualização local falha", async () => {
+      const playlist = createMockPlaylist({ id: 1 });
+      mockPlaylistSyncService.syncPlaylist.mockRejectedValue(new Error("Falha no Xtream"));
+
+      await component.selectForPlayer(playlist);
+
+      expect(component.syncErrorMessage()).toContain("Falha no Xtream");
     });
   });
 
