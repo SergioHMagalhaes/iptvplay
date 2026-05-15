@@ -1,0 +1,35 @@
+<main class="grid gap-8 overflow-x-hidden px-4 pt-5 pb-8 md:gap-10 md:px-10 md:pt-8 md:pb-12">
+  @if (errorMessage(); as error) {
+    <p class="m-0 text-[#ff5c62]">
+      {{ error }}
+    </p>
+  }
+
+  @for (section of sections(); track section.category.externalId) {
+    <section class="grid w-full min-w-0 gap-4">
+      <div class="flex items-center gap-8">
+        <h2 class="m-0 truncate text-[1.1rem] md:text-[1.25rem]">
+          {{ section.category.name }}
+        </h2>
+
+        <button
+          type="button"
+          class="shrink-0 bg-transparent font-bold"
+          (click)="openCategory(section.category.externalId)"
+        >
+          Veja mais &gt;
+        </button>
+      </div>
+
+      <app-movie-carousel [movies]="section.movies" (loadMore)="loadMoreMovies(section.category.externalId)" />
+    </section>
+  }
+
+  @if (isLoading()) {
+    <p class="m-0 text-white/70">Carregando...</p>
+  }
+
+  @if (hasMoreCategories()) {
+    <div appLazyLoadTrigger (reached)="loadMoreCategories()" class="h-px" aria-hidden="true"></div>
+  }
+</main>

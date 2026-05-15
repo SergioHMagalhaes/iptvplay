@@ -1,0 +1,23 @@
+<div class="w-[101vw] overflow-x-hidden">
+  <swiper-container
+    #swiperContainer
+    class="pr-4"
+    slides-per-view="2.2"
+    space-between="12"
+    slides-offset-after="16"
+    breakpoints='{
+      "640":{"slidesPerView":3.2,"spaceBetween":16},
+      "1024":{"slidesPerView":5.2,"spaceBetween":20},
+      "1280":{"slidesPerView":6.2,"spaceBetween":20}
+    }'
+    (swiperslidechange)="onSlideChange($event)"
+    (swiperslideslengthchange)="onSlidesUpdated()"
+    (reachend)="onReachEnd()"
+  >
+    @for (movie of movies(); track movie.id ?? movie.externalId) {
+      <swiper-slide class="!w-[95px] sm:!w-[108px]">
+        <app-movie-card [movie]="movie" />
+      </swiper-slide>
+    }
+  </swiper-container>
+</div>

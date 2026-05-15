@@ -55,6 +55,7 @@ export default [
     },
     // Override or add rules here
     rules: {
+      "prettier/prettier": "off",
       "prettier/prettier": ["error", { parser: "angular" }],
     },
   },
