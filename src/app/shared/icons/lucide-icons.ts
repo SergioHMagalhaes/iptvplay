@@ -11,6 +11,7 @@ import {
   LucidePencil,
   LucideTrash,
   LucideEllipsis,
+  LucideSettings,
 } from "@lucide/angular";
 
 export const LUCIDE_ICONS = [
@@ -26,4 +27,5 @@ export const LUCIDE_ICONS = [
   LucidePencil,
   LucideTrash,
   LucideEllipsis,
+  LucideSettings,
 ] as const;

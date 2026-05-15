@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { PlaylistService } from "../../data-access/services/playlist.service";
 import { PlaylistEntry } from "../../models/playlist.model";
@@ -19,6 +19,7 @@ export class PlaylistListComponent implements OnInit {
   private selectedPlaylistService = inject(SelectedPlaylistService);
   private playlistSyncService = inject(PlaylistSyncService);
   private router = inject(Router);
+  private location = inject(Location);
 
   playlists = signal<PlaylistEntry[]>([]);
   isLoading = signal<boolean>(false);
@@ -104,6 +105,10 @@ export class PlaylistListComponent implements OnInit {
     const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
     if (diffDays <= 0) return "Expirado";
     return `Expira em ${diffDays} dias`;
+  }
+
+  ToBack(): void {
+    this.location.back();
   }
 
   private restoreSelectedPlaylist(): void {
