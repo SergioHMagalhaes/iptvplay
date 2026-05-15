@@ -3,8 +3,8 @@ import { CommonModule } from "@angular/common";
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { PlaylistService } from "../../../../core/services/playlist.service";
-import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { PlaylistService } from "../../data-access/services/playlist.service";
+import { PlaylistEntry } from "../../models/playlist.model";
 import { LUCIDE_ICONS } from "../../../../shared/icons/lucide-icons";
 
 @Component({

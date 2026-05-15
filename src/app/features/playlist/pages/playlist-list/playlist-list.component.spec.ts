@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
 import { vi } from "vitest";
 import { PlaylistListComponent } from "./playlist-list.component";
-import { PlaylistService } from "../../../../core/services/playlist.service";
-import { PlaylistEntry } from "../../../../core/models/playlist.model";
-import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
-import { PlaylistSyncService } from "../../../../core/services/playlist-sync.service";
+import { PlaylistService } from "../../data-access/services/playlist.service";
+import { PlaylistEntry } from "../../models/playlist.model";
+import { SelectedPlaylistService } from "../../data-access/services/selected-playlist.service";
+import { PlaylistSyncService } from "../../data-access/services/playlist-sync.service";
 
 /**
  * Testes unitários para PlaylistListComponent

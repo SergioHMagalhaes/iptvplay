@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
-import { PlaylistService } from "../../../../core/services/playlist.service";
-import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { PlaylistService } from "../../data-access/services/playlist.service";
+import { PlaylistEntry } from "../../models/playlist.model";
 import { LUCIDE_ICONS } from "../../../../shared/icons/lucide-icons";
-import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
-import { PlaylistSyncService } from "../../../../core/services/playlist-sync.service";
+import { SelectedPlaylistService } from "../../data-access/services/selected-playlist.service";
+import { PlaylistSyncService } from "../../data-access/services/playlist-sync.service";
 
 @Component({
   selector: "app-playlist-list",

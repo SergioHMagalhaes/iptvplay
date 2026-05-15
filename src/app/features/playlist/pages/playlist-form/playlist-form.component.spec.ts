@@ -4,8 +4,8 @@ import { provideRouter, Router, ActivatedRoute } from "@angular/router";
 import { of } from "rxjs";
 import { vi } from "vitest";
 import { PlaylistFormComponent } from "./playlist-form.component";
-import { PlaylistService } from "../../../../core/services/playlist.service";
-import { PlaylistEntry } from "../../../../core/models/playlist.model";
+import { PlaylistService } from "../../data-access/services/playlist.service";
+import { PlaylistEntry } from "../../models/playlist.model";
 
 /**
  * Testes unitários para PlaylistFormComponent
