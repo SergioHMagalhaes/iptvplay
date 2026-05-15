@@ -1,13 +1,32 @@
 import Dexie, { Table } from "dexie";
 import { PlaylistEntry } from "../models/playlist.model";
+import { IptvCategory, IptvMovie, IptvSeries, IptvTvChannel } from "../models/iptv-content.model";
+
+export interface AppSetting {
+  key: "selectedPlaylistId";
+  value: number | null;
+}
 
 export class PlaylistDatabase extends Dexie {
   playlists!: Table<PlaylistEntry, number>;
+  categories!: Table<IptvCategory, number>;
+  movies!: Table<IptvMovie, number>;
+  series!: Table<IptvSeries, number>;
+  tv!: Table<IptvTvChannel, number>;
+  settings!: Table<AppSetting, string>;
 
   constructor(dbName = "iptvplay-db") {
     super(dbName);
     this.version(1).stores({
       playlists: "++id, &name, sourceType",
+    });
+    this.version(2).stores({
+      playlists: "++id, &name, sourceType",
+      categories: "++id, playlistId, [playlistId+type], [playlistId+externalId]",
+      movies: "++id, playlistId, [playlistId+externalId], categoryId",
+      series: "++id, playlistId, [playlistId+externalId], categoryId",
+      tv: "++id, playlistId, [playlistId+externalId], categoryId",
+      settings: "&key",
     });
   }
 }

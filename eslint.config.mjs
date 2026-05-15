@@ -29,6 +29,7 @@ export default [
   {
     files: ["**/*.ts"],
     rules: {
+      "prettier/prettier": "off",
       "@angular-eslint/directive-selector": [
         "error",
         {

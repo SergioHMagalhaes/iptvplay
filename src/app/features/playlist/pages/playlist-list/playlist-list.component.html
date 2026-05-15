@@ -13,6 +13,13 @@
   </div>
 }
 
+@if (syncErrorMessage(); as syncError) {
+  <div class="alert alert-error mx-4 mt-4" role="alert">
+    <svg lucideCircleX></svg>
+    <span>{{ syncError }}</span>
+  </div>
+}
+
 <!-- Conteúdo principal -->
 @if (!isLoading()) {
   <div class="flex min-h-screen flex-col p-4 max-w-lg mx-auto">
@@ -73,6 +80,21 @@
                     </p>
                   }
                 </div>
+                <button
+                  data-testid="select-playlist-button"
+                  class="btn btn-sm mr-2"
+                  [class.btn-primary]="selectedPlaylistId() === playlist.id"
+                  [disabled]="syncingPlaylistId() === playlist.id"
+                  (click)="selectForPlayer(playlist); $event.stopPropagation()"
+                >
+                  @if (syncingPlaylistId() === playlist.id) {
+                    <span class="loading loading-spinner loading-xs"></span>
+                  } @else if (selectedPlaylistId() === playlist.id) {
+                    Em uso
+                  } @else {
+                    Usar
+                  }
+                </button>
                 <!-- Menu de contexto -->
                 <div class="relative">
                   <button
