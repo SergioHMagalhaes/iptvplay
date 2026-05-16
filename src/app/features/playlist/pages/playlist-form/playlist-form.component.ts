@@ -151,7 +151,7 @@ export class PlaylistFormComponent implements OnInit {
   }
 
   exit(): void {
-    this.router.navigate(["/"]);
+    this.router.navigate(["/playlists"]);
   }
 
   private updateNameValidator(): void {

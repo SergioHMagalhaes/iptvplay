@@ -12,6 +12,10 @@ import {
   LucideTrash,
   LucideEllipsis,
   LucideSettings,
+  LucideTv,
+  LucideClapperboard,
+  LucideMonitorPlay,
+  LucideSearch,
 } from "@lucide/angular";
 
 export const LUCIDE_ICONS = [
@@ -28,4 +32,8 @@ export const LUCIDE_ICONS = [
   LucideTrash,
   LucideEllipsis,
   LucideSettings,
+  LucideTv,
+  LucideClapperboard,
+  LucideMonitorPlay,
+  LucideSearch,
 ] as const;

@@ -1,0 +1,72 @@
+<nav
+  data-testid="desktop-sidebar"
+  aria-label="Navegação principal"
+  class="fixed left-0 z-20 hidden w-[111px] flex-col items-center gap-[46px] px-[42px] py-[calc(50vh-225px)] text-neutral-content md:flex items-center h"
+>
+  @for (item of desktopItems; track item.id) {
+    <a
+      href="#"
+      class="flex size-[27px] items-center justify-center transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      [class.text-primary]="isActive(item)"
+      [class.pointer-events-none]="item.route === null"
+      [attr.aria-current]="isActive(item) ? 'page' : null"
+      [attr.aria-disabled]="item.route === null ? 'true' : null"
+      [attr.data-nav-id]="item.id"
+      [attr.aria-label]="item.label"
+      (click)="$event.preventDefault(); navigate(item)"
+    >
+      @switch (item.id) {
+        @case ("search") {
+          <svg lucideSearch aria-hidden="true"></svg>
+        }
+        @case ("tv") {
+          <svg lucideTv aria-hidden="true"></svg>
+        }
+        @case ("movies") {
+          <svg lucideClapperboard aria-hidden="true"></svg>
+        }
+        @case ("live") {
+          <svg lucideMonitorPlay aria-hidden="true"></svg>
+        }
+        @case ("playlists") {
+          <svg lucideSettings aria-hidden="true"></svg>
+        }
+      }
+    </a>
+  }
+</nav>
+
+<nav
+  data-testid="mobile-bottom-bar"
+  aria-label="Navegação principal"
+  class="fixed inset-x-0 bottom-0 z-20 flex h-[76px] items-center justify-between bg-neutral px-12 text-neutral-content md:hidden"
+>
+  @for (item of mobileItems; track item.id) {
+    <a
+      href="#"
+      class="flex size-6 items-center justify-center transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      [class.text-primary]="isActive(item)"
+      [class.pointer-events-none]="item.route === null"
+      [attr.aria-current]="isActive(item) ? 'page' : null"
+      [attr.aria-disabled]="item.route === null ? 'true' : null"
+      [attr.data-nav-id]="item.id"
+      [attr.aria-label]="item.label"
+      (click)="$event.preventDefault(); navigate(item)"
+    >
+      @switch (item.id) {
+        @case ("search") {
+          <svg lucideSearch aria-hidden="true"></svg>
+        }
+        @case ("tv") {
+          <svg lucideTv aria-hidden="true"></svg>
+        }
+        @case ("movies") {
+          <svg lucideClapperboard aria-hidden="true"></svg>
+        }
+        @case ("live") {
+          <svg lucideMonitorPlay aria-hidden="true"></svg>
+        }
+      }
+    </a>
+  }
+</nav>

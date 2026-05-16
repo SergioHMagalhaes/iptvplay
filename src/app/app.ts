@@ -4,9 +4,10 @@ import { NavbarComponent } from "./shared/ui/navbar/navbar.component";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter, map, startWith } from "rxjs/operators";
 import { toSignal } from "@angular/core/rxjs-interop";
+import { AppNavigationComponent } from "./shared/ui/app-navigation/app-navigation.component";
 
 @Component({
-  imports: [RouterModule, NavbarComponent],
+  imports: [RouterModule, NavbarComponent, AppNavigationComponent],
   selector: "app-root",
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
