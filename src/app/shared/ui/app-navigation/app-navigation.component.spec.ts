@@ -13,6 +13,7 @@ describe("AppNavigationComponent", () => {
       imports: [AppNavigationComponent],
       providers: [
         provideRouter([
+          { path: "series", component: EmptyComponent },
           { path: "movies", component: EmptyComponent },
           { path: "playlists", component: EmptyComponent },
         ]),
@@ -62,6 +63,18 @@ describe("AppNavigationComponent", () => {
     expect(navigateSpy).toHaveBeenCalledWith("/movies");
   });
 
+  it("navigates the tv item to series", () => {
+    fixture.detectChanges();
+
+    const navigateSpy = vi.spyOn(router, "navigateByUrl");
+    const host = fixture.nativeElement as HTMLElement;
+    const seriesLink = host.querySelector<HTMLAnchorElement>('[data-testid="desktop-sidebar"] [data-nav-id="series"]');
+
+    seriesLink?.click();
+
+    expect(navigateSpy).toHaveBeenCalledWith("/series");
+  });
+
   it("navigates the settings item to playlists", () => {
     fixture.detectChanges();
 
@@ -86,8 +99,8 @@ describe("AppNavigationComponent", () => {
       ...fixture.nativeElement.querySelectorAll('[data-testid="mobile-bottom-bar"] [data-nav-id]'),
     ].map((item: Element) => item.getAttribute("data-nav-id"));
 
-    expect(desktopIds).toEqual(["search", "tv", "movies", "live", "playlists"]);
-    expect(mobileIds).toEqual(["tv", "movies", "live", "search"]);
+    expect(desktopIds).toEqual(["search", "tv", "movies", "series", "playlists"]);
+    expect(mobileIds).toEqual(["tv", "movies", "series", "search"]);
   });
 });
 
