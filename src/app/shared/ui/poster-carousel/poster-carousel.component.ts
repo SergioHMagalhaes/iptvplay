@@ -8,8 +8,14 @@ import {
   output,
   ViewChild,
 } from "@angular/core";
-import { IptvMovie } from "../../../../core/models/iptv-content.model";
-import { MovieCardComponent } from "../movie-card/movie-card.component";
+import { PosterCardComponent } from "../poster-card/poster-card.component";
+
+export interface PosterCarouselItem {
+  id?: number;
+  externalId: number | string;
+  name: string;
+  imageUrl?: string;
+}
 
 type SwiperInstance = {
   isEnd?: boolean;
@@ -22,16 +28,15 @@ type SwiperContainerElement = HTMLElement & {
 };
 
 @Component({
-  selector: "app-movie-carousel",
+  selector: "app-poster-carousel",
   standalone: true,
-  imports: [MovieCardComponent],
-  templateUrl: "./movie-carousel.component.html",
-  styleUrl: "./movie-carousel.component.scss",
+  imports: [PosterCardComponent],
+  templateUrl: "./poster-carousel.component.html",
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovieCarouselComponent implements AfterViewInit {
-  readonly movies = input.required<IptvMovie[]>();
+export class PosterCarouselComponent implements AfterViewInit {
+  readonly items = input.required<PosterCarouselItem[]>();
   readonly loadMore = output<void>();
 
   @ViewChild("swiperContainer") private swiperContainer?: ElementRef<SwiperContainerElement>;

@@ -6,38 +6,38 @@ import { LazyLoadTriggerDirective } from "../../../../shared/directives/lazy-loa
 import { CategoryPageLoader } from "../../../../shared/data-access/content-pagination";
 import { PosterCardComponent } from "../../../../shared/ui/poster-card/poster-card.component";
 import { PosterCarouselItem } from "../../../../shared/ui/poster-carousel/poster-carousel.component";
-import { MoviesService } from "../../data-access/services/movies.service";
+import { SeriesService } from "../../data-access/services/series.service";
 
 @Component({
-  selector: "app-movie-category",
+  selector: "app-series-category",
   standalone: true,
   imports: [CommonModule, PosterCardComponent, LazyLoadTriggerDirective],
-  templateUrl: "./movie-category.component.html",
-  styleUrl: "./movie-category.component.scss",
+  templateUrl: "./series-category.component.html",
+  styleUrl: "./series-category.component.scss",
 })
-export class MovieCategoryComponent implements OnInit {
-  private moviesService = inject(MoviesService);
+export class SeriesCategoryComponent implements OnInit {
+  private seriesService = inject(SeriesService);
   private selectedPlaylistService = inject(SelectedPlaylistService);
   private route = inject(ActivatedRoute);
   private playlistId: number | null = null;
   private categoryId = "";
   private readonly loader = new CategoryPageLoader<PosterCarouselItem>({
     pageSize: 24,
-    getCategory: (playlistId, categoryId) => this.moviesService.getMovieCategory(playlistId, categoryId),
+    getCategory: (playlistId, categoryId) => this.seriesService.getSeriesCategory(playlistId, categoryId),
     getItemsByCategory: async (playlistId, categoryId, offset, limit) => {
-      const movies = await this.moviesService.getMoviesByCategory(playlistId, categoryId, offset, limit);
-      return movies.map((movie) => ({
-        id: movie.id,
-        externalId: movie.externalId,
-        name: movie.name,
-        imageUrl: movie.streamIcon,
+      const series = await this.seriesService.getSeriesByCategory(playlistId, categoryId, offset, limit);
+      return series.map((item) => ({
+        id: item.id,
+        externalId: item.externalId,
+        name: item.name,
+        imageUrl: item.cover,
       }));
     },
   });
 
   readonly category = this.loader.category;
-  readonly movies = this.loader.items;
-  readonly hasMoreMovies = this.loader.hasMoreItems;
+  readonly series = this.loader.items;
+  readonly hasMoreSeries = this.loader.hasMoreItems;
   readonly isLoading = this.loader.isLoading;
 
   @ViewChild(LazyLoadTriggerDirective) private loadTrigger?: LazyLoadTriggerDirective;
@@ -48,7 +48,7 @@ export class MovieCategoryComponent implements OnInit {
     await this.loader.init(this.playlistId, this.categoryId);
   }
 
-  async loadMoreMovies(): Promise<void> {
+  async loadMoreSeries(): Promise<void> {
     await this.loader.loadMore(this.playlistId, this.categoryId);
     this.loader.queueAnotherLoadIfNeeded(this.playlistId, this.categoryId, () => this.loadTrigger?.isNearViewport());
   }

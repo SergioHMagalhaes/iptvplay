@@ -1,22 +1,22 @@
 import { ChangeDetectionStrategy, Component, input, signal } from "@angular/core";
-import { IptvMovie } from "../../../../core/models/iptv-content.model";
-import { LazyLoadTriggerDirective } from "../../../../shared/directives/lazy-load-trigger.directive";
+import { LazyLoadTriggerDirective } from "../../directives/lazy-load-trigger.directive";
 
 @Component({
-  selector: "app-movie-card",
+  selector: "app-poster-card",
   standalone: true,
   imports: [LazyLoadTriggerDirective],
-  templateUrl: "./movie-card.component.html",
-  styleUrl: "./movie-card.component.scss",
+  templateUrl: "./poster-card.component.html",
+  styleUrl: "./poster-card.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovieCardComponent {
-  readonly movie = input.required<IptvMovie>();
+export class PosterCardComponent {
+  readonly name = input.required<string>();
+  readonly imageUrl = input<string | undefined>();
   readonly shouldLoadImage = signal(false);
   readonly hasImageError = signal(false);
 
   requestImage(): void {
-    if (this.movie().streamIcon) {
+    if (this.imageUrl()) {
       this.shouldLoadImage.set(true);
     }
   }

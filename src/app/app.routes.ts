@@ -14,4 +14,8 @@ export const appRoutes: Route[] = [
     path: "movies",
     loadChildren: () => import("./features/movies/movies.routes").then((m) => m.moviesRoutes),
   },
+  {
+    path: "series",
+    loadChildren: () => import("./features/series/series.routes").then((m) => m.seriesRoutes),
+  },
 ];

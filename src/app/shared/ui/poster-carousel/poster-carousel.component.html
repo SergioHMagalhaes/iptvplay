@@ -14,9 +14,9 @@
     (swiperslideslengthchange)="onSlidesUpdated()"
     (reachend)="onReachEnd()"
   >
-    @for (movie of movies(); track movie.id ?? movie.externalId) {
+    @for (item of items(); track item.id ?? item.externalId) {
       <swiper-slide class="!w-[95px] sm:!w-[108px]">
-        <app-movie-card [movie]="movie" />
+        <app-poster-card [name]="item.name" [imageUrl]="item.imageUrl" />
       </swiper-slide>
     }
   </swiper-container>

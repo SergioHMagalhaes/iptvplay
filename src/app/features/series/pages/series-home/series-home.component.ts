@@ -8,32 +8,32 @@ import {
   PosterCarouselComponent,
   PosterCarouselItem,
 } from "../../../../shared/ui/poster-carousel/poster-carousel.component";
-import { MoviesService } from "../../data-access/services/movies.service";
+import { SeriesService } from "../../data-access/services/series.service";
 
 @Component({
-  selector: "app-movies-home",
+  selector: "app-series-home",
   standalone: true,
   imports: [CommonModule, PosterCarouselComponent, LazyLoadTriggerDirective],
-  templateUrl: "./movies-home.component.html",
-  styleUrl: "./movies-home.component.scss",
+  templateUrl: "./series-home.component.html",
+  styleUrl: "./series-home.component.scss",
 })
-export class MoviesHomeComponent implements OnInit {
-  private moviesService = inject(MoviesService);
+export class SeriesHomeComponent implements OnInit {
+  private seriesService = inject(SeriesService);
   private selectedPlaylistService = inject(SelectedPlaylistService);
   private router = inject(Router);
   private playlistId: number | null = null;
   private readonly loader = new CategorySectionsLoader<PosterCarouselItem>({
     categoryPageSize: 8,
     itemPageSize: 12,
-    errorMessage: "Não foi possível carregar os filmes.",
-    getCategories: (playlistId, offset, limit) => this.moviesService.getMovieCategories(playlistId, offset, limit),
+    errorMessage: "Não foi possível carregar as séries.",
+    getCategories: (playlistId, offset, limit) => this.seriesService.getSeriesCategories(playlistId, offset, limit),
     getItemsByCategory: async (playlistId, categoryId, offset, limit) => {
-      const movies = await this.moviesService.getMoviesByCategory(playlistId, categoryId, offset, limit);
-      return movies.map((movie) => ({
-        id: movie.id,
-        externalId: movie.externalId,
-        name: movie.name,
-        imageUrl: movie.streamIcon,
+      const series = await this.seriesService.getSeriesByCategory(playlistId, categoryId, offset, limit);
+      return series.map((item) => ({
+        id: item.id,
+        externalId: item.externalId,
+        name: item.name,
+        imageUrl: item.cover,
       }));
     },
   });
@@ -52,11 +52,11 @@ export class MoviesHomeComponent implements OnInit {
     await this.loader.loadMoreCategories(this.playlistId);
   }
 
-  async loadMoreMovies(categoryId: string): Promise<void> {
+  async loadMoreSeries(categoryId: string): Promise<void> {
     await this.loader.loadMoreItems(this.playlistId, categoryId);
   }
 
   openCategory(categoryId: string): Promise<boolean> {
-    return this.router.navigate(["/movies/category", categoryId]);
+    return this.router.navigate(["/series/category", categoryId]);
   }
 }

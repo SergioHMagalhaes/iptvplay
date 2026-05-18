@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.movie-card {
+.poster-card {
   display: grid;
   gap: 0.65rem;
 }
@@ -45,11 +45,4 @@ img {
   to {
     background-position-x: -200%;
   }
-}
-
-h3 {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
 }

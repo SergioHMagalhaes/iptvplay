@@ -1,4 +1,4 @@
-export type AppNavigationId = "search" | "tv" | "movies" | "live" | "playlists";
+export type AppNavigationId = "search" | "tv" | "movies" | "series" | "playlists";
 
 export interface AppNavigationItem {
   readonly id: AppNavigationId;
@@ -18,7 +18,7 @@ export const APP_NAVIGATION_ITEMS: readonly AppNavigationItem[] = [
   },
   {
     id: "tv",
-    label: "TV",
+    label: "Ao vivo",
     route: null,
     desktopOrder: 2,
     mobileOrder: 1,
@@ -31,9 +31,9 @@ export const APP_NAVIGATION_ITEMS: readonly AppNavigationItem[] = [
     mobileOrder: 2,
   },
   {
-    id: "live",
-    label: "Ao vivo",
-    route: null,
+    id: "series",
+    label: "Séries",
+    route: "/series",
     desktopOrder: 4,
     mobileOrder: 3,
   },
