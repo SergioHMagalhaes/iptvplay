@@ -15,6 +15,10 @@ export const appRoutes: Route[] = [
     loadChildren: () => import("./features/movies/movies.routes").then((m) => m.moviesRoutes),
   },
   {
+    path: "tv",
+    loadChildren: () => import("./features/tv/tv.routes").then((m) => m.liveTvRoutes),
+  },
+  {
     path: "series",
     loadChildren: () => import("./features/series/series.routes").then((m) => m.seriesRoutes),
   },

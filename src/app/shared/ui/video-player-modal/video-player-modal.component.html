@@ -1,0 +1,18 @@
+<dialog class="modal modal-open" [attr.aria-label]="title || 'Player'">
+  <div class="modal-box h-[100vh] w-[100vw] max-w-6xl rounded-none bg-black p-0 md:h-[80vh] md:w-11/12">
+    <button
+      type="button"
+      class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10 text-white"
+      aria-label="Fechar player"
+      (click)="close()"
+    >
+      <svg lucideX [size]="25" aria-hidden="true"></svg>
+    </button>
+
+    <video #playerMedia class="video-js h-full w-full" [attr.src]="src" playsinline disablepictureinpicture></video>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button type="button" (click)="close()">Fechar</button>
+  </form>
+</dialog>

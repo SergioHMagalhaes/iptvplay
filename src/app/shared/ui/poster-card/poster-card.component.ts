@@ -10,6 +10,7 @@ import { LazyLoadTriggerDirective } from "../../directives/lazy-load-trigger.dir
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PosterCardComponent {
+  readonly tv = input<boolean>(false);
   readonly name = input.required<string>();
   readonly imageUrl = input<string | undefined>();
   readonly shouldLoadImage = signal(false);

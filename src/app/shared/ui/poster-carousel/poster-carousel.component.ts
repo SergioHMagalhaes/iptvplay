@@ -37,6 +37,7 @@ type SwiperContainerElement = HTMLElement & {
 })
 export class PosterCarouselComponent implements AfterViewInit {
   readonly items = input.required<PosterCarouselItem[]>();
+  readonly tv = input<boolean>(false);
   readonly loadMore = output<void>();
   readonly selected = output<PosterCarouselItem>();
 

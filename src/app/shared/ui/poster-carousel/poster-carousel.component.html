@@ -16,7 +16,7 @@
   >
     @for (item of items(); track item.id ?? item.externalId) {
       <swiper-slide class="!w-[95px] cursor-pointer sm:!w-[108px]" (click)="selectItem(item)">
-        <app-poster-card [name]="item.name" [imageUrl]="item.imageUrl" />
+        <app-poster-card [tv]="tv()" [name]="item.name" [imageUrl]="item.imageUrl" />
       </swiper-slide>
     }
   </swiper-container>

@@ -1,0 +1,29 @@
+<main class="grid gap-6 px-4 pt-5 pb-8 lg:px-10 lg:pt-8 lg:pb-12">
+  <header>
+    <h1 class="m-0 text-[1.75rem] lg:text-[2rem]">
+      {{ category()?.name ?? "Canais" }}
+    </h1>
+  </header>
+
+  <section
+    class="grid grid-cols-3 gap-4 sm:grid-cols-4 min-[700px]:grid-cols-6 lg:grid-cols-8 lg:gap-5 min-[1200px]:grid-cols-10"
+  >
+    @for (channel of channels(); track channel.id ?? channel.externalId) {
+      <button type="button" class="w-[108px] text-left" (click)="openChannel(channel)">
+        <app-poster-card [tv]="true" [name]="channel.name" [imageUrl]="channel.imageUrl" />
+      </button>
+    }
+  </section>
+
+  @if (isLoading()) {
+    <p class="m-0 text-white/70">Carregando...</p>
+  }
+
+  @if (hasMoreChannels()) {
+    <div appLazyLoadTrigger (reached)="loadMoreChannels()" class="h-px" aria-hidden="true"></div>
+  }
+</main>
+
+@if (playbackUrl(); as src) {
+  <app-video-player-modal [src]="src" [title]="channelTitle()" mode="live" (closed)="closePlayer()" />
+}

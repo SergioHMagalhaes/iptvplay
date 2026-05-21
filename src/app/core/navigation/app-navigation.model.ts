@@ -19,7 +19,7 @@ export const APP_NAVIGATION_ITEMS: readonly AppNavigationItem[] = [
   {
     id: "tv",
     label: "Ao vivo",
-    route: null,
+    route: "/tv",
     desktopOrder: 2,
     mobileOrder: 1,
   },

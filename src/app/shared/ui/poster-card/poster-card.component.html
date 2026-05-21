@@ -1,9 +1,17 @@
 <article class="poster-card">
   <div class="poster" appLazyLoadTrigger (reached)="requestImage()">
     @if (imageUrl() && shouldLoadImage() && !hasImageError()) {
-      <img [src]="imageUrl()" [alt]="name()" loading="lazy" (error)="markImageAsFailed()" />
+      <img
+        [class]="tv() ? '!object-contain' : ''"
+        [src]="imageUrl()"
+        [alt]="name()"
+        loading="lazy"
+        (error)="markImageAsFailed()"
+      />
     } @else if (!imageUrl() || hasImageError()) {
-      <div class="poster-fallback text-center !text-[10px]" aria-hidden="true">{{ name() }}</div>
+      <div class="poster-fallback text-center !text-[10px]" aria-hidden="true">
+        {{ name() }}
+      </div>
     } @else {
       <div class="poster-placeholder" aria-hidden="true"></div>
     }
