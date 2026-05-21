@@ -17,4 +17,8 @@ export class MoviesService {
   getMoviesByCategory(playlistId: number, categoryId: string, offset: number, limit: number): Promise<IptvMovie[]> {
     return this.repository.getMoviesByCategory(playlistId, categoryId, offset, limit);
   }
+
+  getMovieByExternalId(playlistId: number, externalId: number): Promise<IptvMovie | undefined> {
+    return this.repository.getMovieByExternalId(playlistId, externalId);
+  }
 }

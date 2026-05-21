@@ -1,0 +1,157 @@
+<main class="details-page min-h-[calc(100vh-64px)] overflow-hidden bg-base-100 text-base-content">
+  @if (isLoading()) {
+    <section class="relative min-h-[810px] pb-28 md:min-h-[calc(100vh-64px)] md:pb-10">
+      <div class="absolute inset-x-0 top-0 h-[410px] bg-neutral opacity-20 md:h-full"></div>
+
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_68%_25%,rgba(0,6,15,0)_0%,rgba(0,6,15,0.42)_38%,#00060f_82%),linear-gradient(180deg,rgba(0,6,15,0)_0%,#00060f_72%,#00060f_100%)] md:bg-[linear-gradient(90deg,#00060f_0%,rgba(0,6,15,0.88)_26%,rgba(0,6,15,0.28)_58%,#00060f_100%),linear-gradient(180deg,rgba(0,6,15,0)_42%,#00060f_100%)]"
+      ></div>
+
+      <div
+        class="relative z-10 grid gap-5 px-7 pt-[245px] md:max-w-[520px] md:px-20 md:pt-[76px] lg:ml-10 lg:pt-[84px]"
+      >
+        <div class="skeleton h-[104px] w-[290px] rounded-none bg-base-300"></div>
+
+        <div class="skeleton h-10 w-full max-w-[374px] rounded-none bg-base-300"></div>
+
+        <div class="grid gap-2">
+          <div class="skeleton h-4 w-full max-w-[388px] rounded-none bg-base-300"></div>
+          <div class="skeleton h-4 w-full max-w-[360px] rounded-none bg-base-300"></div>
+          <div class="skeleton h-4 w-full max-w-[320px] rounded-none bg-base-300"></div>
+          <div class="skeleton h-4 w-full max-w-[260px] rounded-none bg-base-300"></div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <div class="skeleton h-3 w-16 rounded-none bg-base-300"></div>
+          <div class="skeleton h-3 w-20 rounded-none bg-base-300"></div>
+          <div class="skeleton h-3 w-14 rounded-none bg-base-300"></div>
+        </div>
+      </div>
+    </section>
+  } @else if (errorMessage()) {
+    <p class="px-7 pt-10 text-[#ff5c62] md:px-20">{{ errorMessage() }}</p>
+  } @else {
+    <section class="relative min-h-[810px] pb-28 md:min-h-[calc(100vh-64px)] md:pb-10">
+      <div
+        data-testid="details-banner"
+        class="absolute inset-x-0 top-0 h-[410px] bg-cover bg-center opacity-20 md:h-full"
+        [style.background-image]="bannerUrl() ? 'url(' + bannerUrl() + ')' : null"
+        aria-hidden="true"
+      ></div>
+      <div
+        data-testid="details-gradient"
+        class="absolute inset-0 bg-[radial-gradient(circle_at_68%_25%,rgba(0,6,15,0)_0%,rgba(0,6,15,0.42)_38%,#00060f_82%),linear-gradient(180deg,rgba(0,6,15,0)_0%,#00060f_72%,#00060f_100%)] md:bg-[linear-gradient(90deg,#00060f_0%,rgba(0,6,15,0.88)_26%,rgba(0,6,15,0.28)_58%,#00060f_100%),linear-gradient(180deg,rgba(0,6,15,0)_42%,#00060f_100%)]"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="relative z-10 grid gap-5 px-7 pt-[245px] md:max-w-[520px] md:px-20 md:pt-[76px] lg:ml-10 lg:pt-[84px]"
+      >
+        <div class="grid h-[104px] max-w-[290px] place-items-start">
+          @if (logoUrl()) {
+            <img class="max-h-[104px] max-w-[290px] object-contain object-left" [src]="logoUrl()" [alt]="title()" />
+          } @else {
+            <h1 class="m-0 text-2xl font-bold leading-tight md:2xl">{{ title() }}</h1>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary h-10 min-h-10 w-full max-w-[374px] rounded-none text-sm font-semibold text-primary-content"
+          (click)="playMain()"
+        >
+          <svg lucidePlay [size]="18" aria-hidden="true"></svg>
+          {{ kind() === "series" ? "Reproduzir Episódio" : "Reproduzir filme" }}
+        </button>
+
+        @if (kind() === "series") {
+          <label class="w-40">
+            <span class="sr-only">Temporada</span>
+            <select
+              class="select h-[42px] min-h-[42px] w-40 rounded-none border-white/10 bg-neutral text-base-content"
+              [value]="selectedSeason()"
+              (change)="selectSeason(+$any($event.target).value)"
+            >
+              @for (season of seasons(); track season) {
+                <option [value]="season">Temporada {{ season }}</option>
+              }
+            </select>
+          </label>
+        }
+
+        <p class="m-0 max-w-[388px] text-sm leading-5 text-base-content/85 md:min-h-[120px]">
+          {{ synopsis() }}
+        </p>
+
+        @if (infoItems().length) {
+          <ul class="flex flex-wrap gap-x-3 gap-y-1 p-0 text-xs text-base-content/70">
+            @for (item of infoItems(); track item) {
+              <li class="list-none">{{ item }}</li>
+            }
+          </ul>
+        }
+      </div>
+
+      @if (kind() === "series") {
+        <section class="relative z-10 py-7 px-7 md:px-20 lg:ml-10 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          @for (episode of episodes(); track episode.id) {
+            <button type="button" class="grid grid-cols-2 items-start gap-4 text-left" (click)="playEpisode(episode)">
+              <img
+                class="aspect-video w-[300px] bg-neutral object-cover md:w-[200px] rounded-lg"
+                [src]="episode.image || details()?.fallbackImage"
+                [alt]="episode.title"
+                loading="lazy"
+              />
+              <span class="grid min-w-0 gap-1 pt-1">
+                <span class="text-base font-semibold">Episódio {{ episode.episodeNumber }}</span>
+                <span class="truncate text-base-content/80">{{ episode.title }}</span>
+                @if (episode.duration) {
+                  <span class="text-xs text-primary">{{ episode.duration }}</span>
+                }
+              </span>
+            </button>
+          }
+        </section>
+      }
+    </section>
+
+    @if (isPlayerOpen()) {
+      <dialog class="modal modal-open">
+        <div class="modal-box h-[100vh] w-[100vw] md:h-[80vh] md:w-11/12 max-w-6xl rounded-none bg-black p-0">
+          <form method="dialog">
+            <button
+              type="button"
+              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10 text-white"
+              aria-label="Fechar player"
+              (click)="closePlayer()"
+            >
+              <svg lucideX [size]="25" aria-hidden="true"></svg>
+            </button>
+          </form>
+
+          <video
+            #playerMedia
+            class="video-js w-full aspect-video max-h-[50vh] md:max-h-[90vh]"
+            [attr.src]="playbackUrl()"
+            playsinline
+            disablepictureinpicture
+          ></video>
+          <div class="md:hidden">
+            @if (logoUrl()) {
+              <img class="max-h-[50px] max-w-[236px] m-10" [src]="logoUrl()" [alt]="title()" />
+            } @else {
+              <h1 class="m-10 text-3xl font-bold leading-tight md:text-5xl">{{ title() }}</h1>
+            }
+            <p class="m-10 max-w-[388px] text-sm leading-5 text-base-content/85 md:min-h-[120px]">
+              {{ synopsis() }}
+            </p>
+          </div>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+          <button type="button" (click)="closePlayer()">Fechar</button>
+        </form>
+      </dialog>
+    }
+  }
+</main>

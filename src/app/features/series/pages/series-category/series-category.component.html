@@ -9,7 +9,9 @@
     class="grid grid-cols-3 gap-4 sm:grid-cols-4 min-[700px]:grid-cols-6 lg:grid-cols-8 lg:gap-5 min-[1200px]:grid-cols-10"
   >
     @for (item of series(); track item.id ?? item.externalId) {
-      <app-poster-card class="!w-[108px]" [name]="item.name" [imageUrl]="item.imageUrl" />
+      <button type="button" class="w-[108px] text-left" (click)="openSeries(item)">
+        <app-poster-card [name]="item.name" [imageUrl]="item.imageUrl" />
+      </button>
     }
   </section>
 

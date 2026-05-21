@@ -59,4 +59,8 @@ export class SeriesHomeComponent implements OnInit {
   openCategory(categoryId: string): Promise<boolean> {
     return this.router.navigate(["/series/category", categoryId]);
   }
+
+  openSeries(series: PosterCarouselItem): Promise<boolean> {
+    return this.router.navigate(["/series/series", series.externalId]);
+  }
 }

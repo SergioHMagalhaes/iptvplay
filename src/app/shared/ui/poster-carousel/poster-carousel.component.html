@@ -15,7 +15,7 @@
     (reachend)="onReachEnd()"
   >
     @for (item of items(); track item.id ?? item.externalId) {
-      <swiper-slide class="!w-[95px] sm:!w-[108px]">
+      <swiper-slide class="!w-[95px] cursor-pointer sm:!w-[108px]" (click)="selectItem(item)">
         <app-poster-card [name]="item.name" [imageUrl]="item.imageUrl" />
       </swiper-slide>
     }

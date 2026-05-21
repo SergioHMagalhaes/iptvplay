@@ -59,4 +59,8 @@ export class MoviesHomeComponent implements OnInit {
   openCategory(categoryId: string): Promise<boolean> {
     return this.router.navigate(["/movies/category", categoryId]);
   }
+
+  openMovie(movie: PosterCarouselItem): Promise<boolean> {
+    return this.router.navigate(["/movies/movie", movie.externalId]);
+  }
 }

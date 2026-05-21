@@ -18,4 +18,13 @@ export const moviesRoutes: Route[] = [
       title: "Filmes",
     },
   },
+  {
+    path: ":kind/:externalId",
+    loadComponent: () =>
+      import("../details/pages/content-details/content-details.component").then((m) => m.ContentDetailsComponent),
+    data: {
+      routeName: "movie-details",
+      title: "Filmes",
+    },
+  },
 ];

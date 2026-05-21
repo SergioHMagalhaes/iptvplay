@@ -38,6 +38,7 @@ type SwiperContainerElement = HTMLElement & {
 export class PosterCarouselComponent implements AfterViewInit {
   readonly items = input.required<PosterCarouselItem[]>();
   readonly loadMore = output<void>();
+  readonly selected = output<PosterCarouselItem>();
 
   @ViewChild("swiperContainer") private swiperContainer?: ElementRef<SwiperContainerElement>;
 
@@ -58,6 +59,10 @@ export class PosterCarouselComponent implements AfterViewInit {
 
   onSlidesUpdated(): void {
     this.refreshSwiper();
+  }
+
+  selectItem(item: PosterCarouselItem): void {
+    this.selected.emit(item);
   }
 
   private refreshSwiper(): void {

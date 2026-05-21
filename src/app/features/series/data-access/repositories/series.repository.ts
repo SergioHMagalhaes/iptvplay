@@ -30,4 +30,8 @@ export class SeriesRepository {
   ): Promise<IptvSeries[]> {
     return this.contentRepository.getItemsByCategory(playlistId, categoryId, offset, limit);
   }
+
+  async getSeriesByExternalId(playlistId: number, externalId: number): Promise<IptvSeries | undefined> {
+    return this.db.series.where("[playlistId+externalId]").equals([playlistId, externalId]).first();
+  }
 }

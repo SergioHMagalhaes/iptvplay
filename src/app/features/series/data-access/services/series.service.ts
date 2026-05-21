@@ -17,4 +17,8 @@ export class SeriesService {
   getSeriesByCategory(playlistId: number, categoryId: string, offset: number, limit: number): Promise<IptvSeries[]> {
     return this.repository.getSeriesByCategory(playlistId, categoryId, offset, limit);
   }
+
+  getSeriesByExternalId(playlistId: number, externalId: number): Promise<IptvSeries | undefined> {
+    return this.repository.getSeriesByExternalId(playlistId, externalId);
+  }
 }

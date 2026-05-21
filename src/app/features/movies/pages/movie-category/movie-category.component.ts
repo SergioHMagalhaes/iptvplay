@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
 import { LazyLoadTriggerDirective } from "../../../../shared/directives/lazy-load-trigger.directive";
 import { CategoryPageLoader } from "../../../../shared/data-access/content-pagination";
@@ -19,6 +19,7 @@ export class MovieCategoryComponent implements OnInit {
   private moviesService = inject(MoviesService);
   private selectedPlaylistService = inject(SelectedPlaylistService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private playlistId: number | null = null;
   private categoryId = "";
   private readonly loader = new CategoryPageLoader<PosterCarouselItem>({
@@ -51,5 +52,9 @@ export class MovieCategoryComponent implements OnInit {
   async loadMoreMovies(): Promise<void> {
     await this.loader.loadMore(this.playlistId, this.categoryId);
     this.loader.queueAnotherLoadIfNeeded(this.playlistId, this.categoryId, () => this.loadTrigger?.isNearViewport());
+  }
+
+  openMovie(movie: PosterCarouselItem): Promise<boolean> {
+    return this.router.navigate(["/movies/movie", movie.externalId]);
   }
 }

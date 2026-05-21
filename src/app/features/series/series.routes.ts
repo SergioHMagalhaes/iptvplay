@@ -18,4 +18,13 @@ export const seriesRoutes: Route[] = [
       title: "Séries",
     },
   },
+  {
+    path: ":kind/:externalId",
+    loadComponent: () =>
+      import("../details/pages/content-details/content-details.component").then((m) => m.ContentDetailsComponent),
+    data: {
+      routeName: "series-details",
+      title: "Séries",
+    },
+  },
 ];

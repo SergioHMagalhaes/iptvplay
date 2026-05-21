@@ -21,7 +21,11 @@
         </button>
       </div>
 
-      <app-poster-carousel [items]="section.items" (loadMore)="loadMoreSeries(section.category.externalId)" />
+      <app-poster-carousel
+        [items]="section.items"
+        (loadMore)="loadMoreSeries(section.category.externalId)"
+        (selected)="openSeries($event)"
+      />
     </section>
   }
 

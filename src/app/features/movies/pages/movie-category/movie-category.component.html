@@ -9,7 +9,9 @@
     class="grid grid-cols-3 gap-4 sm:grid-cols-4 min-[700px]:grid-cols-6 lg:grid-cols-8 lg:gap-5 min-[1200px]:grid-cols-10"
   >
     @for (movie of movies(); track movie.id ?? movie.externalId) {
-      <app-poster-card class="!w-[108px]" [name]="movie.name" [imageUrl]="movie.imageUrl" />
+      <button type="button" class="w-[108px] text-left" (click)="openMovie(movie)">
+        <app-poster-card [name]="movie.name" [imageUrl]="movie.imageUrl" />
+      </button>
     }
   </section>
 

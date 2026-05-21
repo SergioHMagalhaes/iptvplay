@@ -30,4 +30,8 @@ export class MoviesRepository {
   ): Promise<IptvMovie[]> {
     return this.contentRepository.getItemsByCategory(playlistId, categoryId, offset, limit);
   }
+
+  async getMovieByExternalId(playlistId: number, externalId: number): Promise<IptvMovie | undefined> {
+    return this.db.movies.where("[playlistId+externalId]").equals([playlistId, externalId]).first();
+  }
 }
