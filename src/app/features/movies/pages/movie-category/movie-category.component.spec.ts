@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from "@angular/router";
 import { vi } from "vitest";
 import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
 import { MoviesService } from "../../data-access/services/movies.service";
@@ -8,6 +8,7 @@ import { MovieCategoryComponent } from "./movie-category.component";
 describe("MovieCategoryComponent", () => {
   let fixture: ComponentFixture<MovieCategoryComponent>;
   let component: MovieCategoryComponent;
+  let router: Router;
   let moviesService: {
     getMovieCategory: ReturnType<typeof vi.fn>;
     getMoviesByCategory: ReturnType<typeof vi.fn>;
@@ -40,12 +41,14 @@ describe("MovieCategoryComponent", () => {
       providers: [
         { provide: MoviesService, useValue: moviesService },
         { provide: SelectedPlaylistService, useValue: { getSelectedPlaylistId: vi.fn().mockResolvedValue(1) } },
+        provideRouter([{ path: "movies/:kind/:externalId", children: [] }]),
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ categoryId: "10" }) } } },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MovieCategoryComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
   });
 
   it("loads category metadata and the first movie page", async () => {
@@ -74,5 +77,13 @@ describe("MovieCategoryComponent", () => {
     await component.loadMoreMovies();
 
     expect(moviesService.getMoviesByCategory).toHaveBeenLastCalledWith(1, "10", 24, 24);
+  });
+
+  it("navigates to the movie details page when a movie is selected", async () => {
+    const navigateSpy = vi.spyOn(router, "navigate");
+
+    await component.openMovie({ externalId: 1, name: "Movie 1" });
+
+    expect(navigateSpy).toHaveBeenCalledWith(["/movies/movie", 1]);
   });
 });

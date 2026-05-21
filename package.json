@@ -6,7 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-	"coverage": "nx test --coverage",
+    "coverage": "nx test --coverage",
     "prepare": "husky"
   },
   "private": true,
@@ -24,7 +24,8 @@
     "postcss": "^8.5.14",
     "rxjs": "~7.8.0",
     "swiper": "^12.1.4",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "video.js": "^8.23.7"
   },
   "devDependencies": {
     "@angular-devkit/core": "~21.2.0",

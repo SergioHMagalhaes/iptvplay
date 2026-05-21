@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ActivatedRoute, convertToParamMap } from "@angular/router";
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from "@angular/router";
 import { vi } from "vitest";
 import { SelectedPlaylistService } from "../../../../core/services/selected-playlist.service";
 import { SeriesService } from "../../data-access/services/series.service";
@@ -8,6 +8,7 @@ import { SeriesCategoryComponent } from "./series-category.component";
 describe("SeriesCategoryComponent", () => {
   let fixture: ComponentFixture<SeriesCategoryComponent>;
   let component: SeriesCategoryComponent;
+  let router: Router;
   let seriesService: {
     getSeriesCategory: ReturnType<typeof vi.fn>;
     getSeriesByCategory: ReturnType<typeof vi.fn>;
@@ -40,12 +41,14 @@ describe("SeriesCategoryComponent", () => {
       providers: [
         { provide: SeriesService, useValue: seriesService },
         { provide: SelectedPlaylistService, useValue: { getSelectedPlaylistId: vi.fn().mockResolvedValue(1) } },
+        provideRouter([{ path: "series/:kind/:externalId", children: [] }]),
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ categoryId: "10" }) } } },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SeriesCategoryComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
   });
 
   it("loads category metadata and the first series page", async () => {
@@ -74,5 +77,13 @@ describe("SeriesCategoryComponent", () => {
     await component.loadMoreSeries();
 
     expect(seriesService.getSeriesByCategory).toHaveBeenLastCalledWith(1, "10", 24, 24);
+  });
+
+  it("navigates to the series details page when a series is selected", async () => {
+    const navigateSpy = vi.spyOn(router, "navigate");
+
+    await component.openSeries({ externalId: 1, name: "Series 1" });
+
+    expect(navigateSpy).toHaveBeenCalledWith(["/series/series", 1]);
   });
 });

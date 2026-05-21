@@ -33,4 +33,16 @@ describe("PosterCarouselComponent", () => {
 
     expect(loadMoreSpy).not.toHaveBeenCalled();
   });
+
+  it("emits the selected poster when an item is clicked", () => {
+    const selectedSpy = vi.fn();
+    const item = { externalId: 42, name: "Movie 42" };
+    fixture.componentRef.setInput("items", [item]);
+    component.selected.subscribe(selectedSpy);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector("swiper-slide").click();
+
+    expect(selectedSpy).toHaveBeenCalledWith(item);
+  });
 });
