@@ -65,6 +65,26 @@ describe("VideoPlayerService", () => {
     );
   });
 
+  it("keeps fullscreen controls but removes the play toggle in live mode", async () => {
+    document.body.appendChild(media);
+
+    await service.play(media, "https://iptv.test/live/channel.m3u8", { mode: "live" });
+
+    expect(videojs).toHaveBeenCalledWith(
+      media,
+      expect.objectContaining({
+        autoplay: true,
+        controls: true,
+        liveui: true,
+        controlBar: expect.objectContaining({
+          fullscreenToggle: true,
+          pictureInPictureToggle: false,
+          playToggle: false,
+        }),
+      }),
+    );
+  });
+
   it("disposes the previous player before recreating it for a new source", async () => {
     document.body.appendChild(media);
     await service.play(media, "https://iptv.test/movie.mp4");
