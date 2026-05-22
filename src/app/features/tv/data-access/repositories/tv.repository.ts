@@ -30,4 +30,8 @@ export class TvRepository {
   ): Promise<IptvTvChannel[]> {
     return this.contentRepository.getItemsByCategory(playlistId, categoryId, offset, limit);
   }
+
+  getChannelByExternalId(playlistId: number, externalId: number): Promise<IptvTvChannel | undefined> {
+    return this.db.tv.where("[playlistId+externalId]").equals([playlistId, externalId]).first();
+  }
 }

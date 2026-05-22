@@ -17,4 +17,14 @@ export const liveTvRoutes: Route[] = [
       title: "Ao vivo",
     },
   },
+  {
+    path: "channel/:externalId",
+    loadComponent: () =>
+      import("../details/pages/content-details/content-details.component").then((m) => m.ContentDetailsComponent),
+    data: {
+      detailKind: "channel",
+      routeName: "channel-details",
+      title: "Ao vivo",
+    },
+  },
 ];

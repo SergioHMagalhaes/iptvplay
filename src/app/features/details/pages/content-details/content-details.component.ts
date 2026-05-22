@@ -83,9 +83,10 @@ export class ContentDetailsComponent implements OnInit, OnDestroy {
   );
 
   async ngOnInit(): Promise<void> {
-    const kind = this.route.snapshot.paramMap.get("kind") as DetailKind | null;
+    const kind = (this.route.snapshot.paramMap.get("kind") ??
+      this.route.snapshot.data["detailKind"]) as DetailKind | null;
     const externalId = Number(this.route.snapshot.paramMap.get("externalId"));
-    if ((kind !== "movie" && kind !== "series") || Number.isNaN(externalId)) {
+    if ((kind !== "movie" && kind !== "series" && kind !== "channel") || Number.isNaN(externalId)) {
       this.errorMessage.set("Conteúdo inválido.");
       this.isLoading.set(false);
       return;
@@ -99,8 +100,10 @@ export class ContentDetailsComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const tmdb = await this.tmdbService.search(kind, details.name);
-      this.tmdbDetails.set(tmdb);
+      if (kind !== "channel") {
+        const tmdb = await this.tmdbService.search(kind, details.name);
+        this.tmdbDetails.set(tmdb);
+      }
 
       if (kind === "series") {
         this.playlistEpisodes.set(await this.detailsService.getSeriesEpisodes(externalId));
@@ -181,7 +184,7 @@ export class ContentDetailsComponent implements OnInit, OnDestroy {
     const mediaElement = this.playerMedia?.nativeElement;
     if (!mediaElement?.isConnected) return;
 
-    await this.videoPlayer.play(mediaElement, url);
+    await this.videoPlayer.play(mediaElement, url, kind === "channel" ? { mode: "live" } : undefined);
   }
 
   closePlayer(exitFullscreen = true): void {

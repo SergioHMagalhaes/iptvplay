@@ -28,6 +28,10 @@ export class LiveTvService {
     return this.repository.getChannelsByCategory(playlistId, categoryId, offset, limit);
   }
 
+  getChannelByExternalId(playlistId: number, externalId: number): Promise<IptvTvChannel | undefined> {
+    return this.repository.getChannelByExternalId(playlistId, externalId);
+  }
+
   async getChannelPlaybackUrl(externalId: number): Promise<string> {
     const playlist = await this.requireSelectedPlaylist();
     if (!playlist.domain || !playlist.username || !playlist.password) {

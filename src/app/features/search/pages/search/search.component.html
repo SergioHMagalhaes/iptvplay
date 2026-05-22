@@ -1,0 +1,36 @@
+<main class="grid gap-6 px-4 pt-5 pb-8 lg:px-10 lg:pt-8 lg:pb-12">
+  <header class="w-[90vw] md:w-[50vw] m-auto">
+    <label class="input h-12 w-full max-w-[680px] border-white/10 bg-neutral text-base-content">
+      <svg lucideSearch [size]="20" class="text-base-content/60" aria-hidden="true"></svg>
+      <span class="sr-only">Buscar filmes, séries e TV</span>
+      <input
+        type="search"
+        class="grow rounded-lg"
+        placeholder="Filmes, séries ou TV"
+        autocomplete="off"
+        [value]="query()"
+        (input)="onQueryInput($event)"
+      />
+    </label>
+  </header>
+
+  @if (isLoading()) {
+    <p class="m-0 text-base-content/70">Buscando...</p>
+  } @else if (errorMessage()) {
+    <p class="m-0 text-[#ff5c62]">{{ errorMessage() }}</p>
+  } @else if (hasQuery() && !hasResults()) {
+    <p class="m-0 text-base-content/70">Nenhum resultado encontrado.</p>
+  } @else {
+    <section class="grid gap-4" aria-label="Resultados da busca">
+      <div
+        class="grid grid-cols-3 gap-4 sm:grid-cols-4 min-[700px]:grid-cols-6 lg:grid-cols-8 lg:gap-5 min-[1200px]:grid-cols-10"
+      >
+        @for (item of results(); track item.kind + item.externalId) {
+          <button type="button" data-testid="search-result" class="w-[108px] text-left" (click)="openResult(item)">
+            <app-poster-card [name]="item.name" [imageUrl]="item.imageUrl" [tv]="item.kind === 'tv'" />
+          </button>
+        }
+      </div>
+    </section>
+  }
+</main>

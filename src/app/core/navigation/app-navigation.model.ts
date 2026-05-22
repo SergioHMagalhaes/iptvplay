@@ -12,7 +12,7 @@ export const APP_NAVIGATION_ITEMS: readonly AppNavigationItem[] = [
   {
     id: "search",
     label: "Buscar",
-    route: null,
+    route: "/search",
     desktopOrder: 1,
     mobileOrder: 4,
   },

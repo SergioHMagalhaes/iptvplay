@@ -61,7 +61,9 @@
           (click)="playMain()"
         >
           <svg lucidePlay [size]="18" aria-hidden="true"></svg>
-          {{ kind() === "series" ? "Reproduzir Episódio" : "Reproduzir filme" }}
+          {{
+            kind() === "series" ? "Reproduzir Episódio" : kind() === "channel" ? "Reproduzir canal" : "Reproduzir filme"
+          }}
         </button>
 
         @if (kind() === "series") {

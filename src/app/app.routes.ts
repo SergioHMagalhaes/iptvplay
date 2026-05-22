@@ -22,4 +22,8 @@ export const appRoutes: Route[] = [
     path: "series",
     loadChildren: () => import("./features/series/series.routes").then((m) => m.seriesRoutes),
   },
+  {
+    path: "search",
+    loadChildren: () => import("./features/search/search.routes").then((m) => m.searchRoutes),
+  },
 ];

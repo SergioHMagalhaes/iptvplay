@@ -1,12 +1,13 @@
 import { inject, Injectable } from "@angular/core";
-import { IptvMovie, IptvSeries } from "../../../core/models/iptv-content.model";
+import { IptvMovie, IptvSeries, IptvTvChannel } from "../../../core/models/iptv-content.model";
 import { PlaylistEntry } from "../../../core/models/playlist.model";
 import { PlaylistService } from "../../../core/services/playlist.service";
 import { SelectedPlaylistService } from "../../../core/services/selected-playlist.service";
 import { MoviesService } from "../../movies/data-access/services/movies.service";
 import { SeriesService } from "../../series/data-access/services/series.service";
+import { LiveTvService } from "../../tv/data-access/services/tv.service";
 
-export type DetailKind = "movie" | "series";
+export type DetailKind = "movie" | "series" | "channel";
 
 export interface ContentDetails {
   kind: DetailKind;
@@ -47,9 +48,15 @@ export class ContentDetailsService {
   private playlistService = inject(PlaylistService);
   private moviesService = inject(MoviesService);
   private seriesService = inject(SeriesService);
+  private liveTvService = inject(LiveTvService);
 
   async getDetails(kind: DetailKind, externalId: number): Promise<ContentDetails | null> {
     const playlistId = await this.requireSelectedPlaylistId();
+    if (kind === "channel") {
+      const channel = await this.liveTvService.getChannelByExternalId(playlistId, externalId);
+      return channel ? this.mapChannel(channel) : null;
+    }
+
     const item =
       kind === "movie"
         ? await this.moviesService.getMovieByExternalId(playlistId, externalId)
@@ -85,6 +92,10 @@ export class ContentDetailsService {
   }
 
   async getPlaybackUrl(kind: DetailKind, externalId: number, extension = "mp4"): Promise<string> {
+    if (kind === "channel") {
+      return this.liveTvService.getChannelPlaybackUrl(externalId);
+    }
+
     const playlist = await this.requireSelectedPlaylist();
     if (!playlist.domain || !playlist.username || !playlist.password) {
       throw new Error("A playlist Xtream está incompleta.");
@@ -143,6 +154,15 @@ export class ContentDetailsService {
       name: series.name,
       fallbackImage: series.cover,
       synopsis: series.plot,
+    };
+  }
+
+  private mapChannel(channel: IptvTvChannel): ContentDetails {
+    return {
+      kind: "channel",
+      externalId: channel.externalId,
+      name: channel.name,
+      fallbackImage: channel.streamIcon,
     };
   }
 }
