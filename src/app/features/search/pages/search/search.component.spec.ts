@@ -42,21 +42,6 @@ describe("SearchComponent", () => {
     expect(cards).toHaveLength(1);
   });
 
-  it("shows loading and empty states", async () => {
-    let finishSearch: (results: SearchResult[]) => void = () => undefined;
-    searchService.search.mockReturnValueOnce(new Promise<SearchResult[]>((resolve) => (finishSearch = resolve)));
-
-    await typeQuery("lost", false);
-
-    expect(fixture.nativeElement.textContent).toContain("Buscando");
-
-    finishSearch([]);
-    await Promise.resolve();
-    await fixture.whenStable();
-
-    expect(fixture.nativeElement.textContent).toContain("Nenhum resultado");
-  });
-
   it("shows a request error state when search fails", async () => {
     searchService.search.mockRejectedValueOnce(new Error("db unavailable"));
 

@@ -15,7 +15,22 @@
   </header>
 
   @if (isLoading()) {
-    <p class="m-0 text-base-content/70">Buscando...</p>
+    <section class="grid gap-6">
+      <section
+        class="grid grid-cols-3 gap-4 sm:grid-cols-4 min-[700px]:grid-cols-6 lg:grid-cols-8 lg:gap-5 min-[1200px]:grid-cols-10"
+      >
+        @for (_ of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]; track $index) {
+          <div class="grid w-[108px] gap-2">
+            <div class="skeleton aspect-[2/3] w-full rounded-xl"></div>
+
+            <div class="grid gap-1">
+              <div class="skeleton h-4 w-5/6"></div>
+              <div class="skeleton h-4 w-2/3"></div>
+            </div>
+          </div>
+        }
+      </section>
+    </section>
   } @else if (errorMessage()) {
     <p class="m-0 text-[#ff5c62]">{{ errorMessage() }}</p>
   } @else if (hasQuery() && !hasResults()) {

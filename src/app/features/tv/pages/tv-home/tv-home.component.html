@@ -31,7 +31,26 @@
   }
 
   @if (isLoading()) {
-    <p class="m-0 text-white/70">Carregando...</p>
+    <section class="grid w-full gap-8">
+      @for (_ of [1, 2, 3]; track $index) {
+        <section class="grid w-full min-w-0 gap-4">
+          <div class="flex items-center gap-8">
+            <div class="skeleton h-6 w-40 md:w-56"></div>
+            <div class="skeleton h-5 w-24"></div>
+          </div>
+
+          <div class="flex gap-4 overflow-hidden">
+            @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+              <div class="grid w-[140px] shrink-0 gap-2 md:w-[180px]">
+                <div class="skeleton aspect-[2/3] w-full rounded-xl"></div>
+                <div class="skeleton h-4 w-4/5"></div>
+                <div class="skeleton h-3 w-3/5"></div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </section>
   }
 
   @if (hasMoreCategories()) {
