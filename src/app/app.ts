@@ -1,10 +1,10 @@
 import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { NavbarComponent } from "./shared/ui/navbar/navbar.component";
+import { NavbarComponent } from "./core/layout/navbar/navbar.component";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter, map, startWith } from "rxjs/operators";
 import { toSignal } from "@angular/core/rxjs-interop";
-import { AppNavigationComponent } from "./shared/ui/app-navigation/app-navigation.component";
+import { AppNavigationComponent } from "./core/layout/app-navigation/app-navigation.component";
 
 @Component({
   imports: [RouterModule, NavbarComponent, AppNavigationComponent],

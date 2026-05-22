@@ -2,8 +2,8 @@ import { Component, computed, inject } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { filter, map, startWith } from "rxjs";
-import { APP_NAVIGATION_ITEMS, AppNavigationItem } from "../../../core/navigation/app-navigation.model";
-import { LUCIDE_ICONS } from "../../icons/lucide-icons";
+import { APP_NAVIGATION_ITEMS, AppNavigationItem } from "../../navigation/app-navigation.model";
+import { LUCIDE_ICONS } from "../../../shared/icons/lucide-icons";
 
 @Component({
   selector: "app-navigation",

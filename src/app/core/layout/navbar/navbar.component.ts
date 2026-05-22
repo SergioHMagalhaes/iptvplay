@@ -1,7 +1,7 @@
 import { Component, inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { LUCIDE_ICONS } from "../../icons/lucide-icons";
-import { RouteTitleService } from "../../services/route-title.service";
+import { LUCIDE_ICONS } from "../../../shared/icons/lucide-icons";
+import { RouteTitleService } from "../../../shared/services/route-title.service";
 
 @Component({
   selector: "app-navbar",
